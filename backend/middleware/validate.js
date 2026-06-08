@@ -80,7 +80,8 @@ function validateReporte(req, res, next) {
     proceso: procesoFinal,
     descripcion: descripcion.trim(),
     consecuencia: consecuencia.trim(),
-    gravedad: `${gravNum} - ${GRAV_LABELS[gravNum]}`,
+    gravedad: gravNum,
+    gravedadLabel: GRAV_LABELS[gravNum],
     accionInmediata,
   };
 

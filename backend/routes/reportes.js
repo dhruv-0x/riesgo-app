@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { validateReporte } = require("../middleware/validate");
-const { appendReporte, countReportes } = require("../utils/storage");
-const { generateExcel } = require("../utils/excel");
+const { appendReporte, countReportes, readReportes } = require("../utils/storage");
+const { updateCentralExcelFile } = require("../utils/excel");
 const { sendReporteEmail } = require("../utils/mailer");
 
 // POST /api/reportes — recibe un nuevo reporte del formulario
@@ -10,10 +10,14 @@ router.post("/", validateReporte, async (req, res) => {
   try {
     const reporte = appendReporte(req.reporteValido);
 
-    // Generar Excel con TODOS los reportes y enviar por correo
-    const { readReportes } = require("../utils/storage");
+    // Actualizar el archivo Excel centralizado con todos los reportes
     const todosLosReportes = readReportes();
-    const excelBuffer = generateExcel(todosLosReportes);
+    updateCentralExcelFile(todosLosReportes);
+
+    // Leer el Excel actualizado para enviarlo por correo
+    const fs = require("fs");
+    const { EXCEL_FILE } = require("../utils/excel");
+    const excelBuffer = fs.existsSync(EXCEL_FILE) ? fs.readFileSync(EXCEL_FILE) : null;
 
     // Envío de correo en background (no bloquea la respuesta al usuario)
     sendReporteEmail(reporte, excelBuffer).catch(err => {

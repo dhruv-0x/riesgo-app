@@ -1,4 +1,9 @@
 const XLSX = require("xlsx");
+const fs = require("fs");
+const path = require("path");
+
+const DATA_DIR = path.join(__dirname, "../../data");
+const EXCEL_FILE = path.join(DATA_DIR, "Reportes_Riesgo.xlsx");
 
 const COLUMNS = [
   { key: "fechaRegistro",   header: "Fecha de registro",          width: 22 },
@@ -12,7 +17,7 @@ const COLUMNS = [
 ];
 
 /**
- * Genera un buffer de Excel a partir del array de reportes.
+ * Genera y actualiza un único archivo Excel con todos los reportes
  * @param {Array} reportes
  * @returns {Buffer}
  */
@@ -21,7 +26,15 @@ function generateExcel(reportes) {
 
   // ── Hoja principal ────────────────────────────────────────
   const headers = COLUMNS.map(c => c.header);
-  const rows = reportes.map(r => COLUMNS.map(c => r[c.key] ?? ""));
+  const rows = reportes.map(r => COLUMNS.map(c => {
+    let val = r[c.key] ?? "";
+    // Si es gravedad (número), mostrar también la etiqueta
+    if (c.key === "gravedad" && typeof val === "number") {
+      const labels = { 1: "Insignificante", 2: "Menor", 3: "Moderado", 4: "Mayor", 5: "Catastrófico" };
+      val = `${val} - ${labels[val] || ""}`;
+    }
+    return val;
+  }));
 
   const wsData = [headers, ...rows];
   const ws = XLSX.utils.aoa_to_sheet(wsData);
@@ -86,7 +99,7 @@ function generateExcel(reportes) {
     ["Por gestión", "Cantidad"],
     ...Object.entries(gestionCounts).map(([k, v]) => [k, v]),
     [],
-    [`Generado el: ${new Date().toLocaleString("es-CO")}`]
+    [`Actualizado el: ${new Date().toLocaleString("es-CO")}`]
   ];
 
   const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
@@ -100,4 +113,27 @@ function generateExcel(reportes) {
   return XLSX.write(wb, { type: "buffer", bookType: "xlsx", cellStyles: true });
 }
 
-module.exports = { generateExcel };
+/**
+ * Guarda y actualiza el archivo Excel centralizado
+ */
+function updateCentralExcelFile(reportes) {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+  
+  const buffer = generateExcel(reportes);
+  fs.writeFileSync(EXCEL_FILE, buffer);
+  return EXCEL_FILE;
+}
+
+/**
+ * Lee el contenido del Excel centralizado
+ */
+function readCentralExcelFile() {
+  if (fs.existsSync(EXCEL_FILE)) {
+    return fs.readFileSync(EXCEL_FILE);
+  }
+  return null;
+}
+
+module.exports = { generateExcel, updateCentralExcelFile, readCentralExcelFile, EXCEL_FILE };

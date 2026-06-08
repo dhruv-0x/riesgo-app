@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const fs = require("fs");
 const { requireAdmin } = require("../middleware/auth");
 const { readReportes, countReportes } = require("../utils/storage");
-const { generateExcel } = require("../utils/excel");
+const { readCentralExcelFile, EXCEL_FILE } = require("../utils/excel");
 
 // GET /api/admin/stats — estadísticas para el dashboard admin
 router.get("/stats", requireAdmin, (req, res) => {
@@ -42,15 +43,14 @@ router.get("/stats", requireAdmin, (req, res) => {
   }
 });
 
-// GET /api/admin/export — descarga el Excel con todos los reportes
+// GET /api/admin/export — descarga el Excel centralizado con todos los reportes
 router.get("/export", requireAdmin, (req, res) => {
   try {
-    const reportes = readReportes();
-    if (reportes.length === 0) {
+    if (!fs.existsSync(EXCEL_FILE)) {
       return res.status(404).json({ error: "No hay reportes registrados aún." });
     }
 
-    const buffer = generateExcel(reportes);
+    const buffer = fs.readFileSync(EXCEL_FILE);
     const fecha = new Date().toISOString().slice(0, 10);
     const filename = `Reportes_Riesgo_${fecha}.xlsx`;
 

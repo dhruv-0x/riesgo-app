@@ -59,15 +59,14 @@ app.use("/api/admin", adminRouter);
 // ── Descarga de Excel (testing) ──────────────────────────────
 app.get("/download-excel", (req, res) => {
   try {
-    const { readReportes } = require("./utils/storage");
-    const { generateExcel } = require("./utils/excel");
+    const fs = require("fs");
+    const { EXCEL_FILE } = require("./utils/excel");
     
-    const reportes = readReportes();
-    if (reportes.length === 0) {
+    if (!fs.existsSync(EXCEL_FILE)) {
       return res.status(404).json({ error: "No hay reportes registrados aún." });
     }
 
-    const buffer = generateExcel(reportes);
+    const buffer = fs.readFileSync(EXCEL_FILE);
     const fecha = new Date().toISOString().slice(0, 10);
     const filename = `Reportes_Riesgo_${fecha}.xlsx`;
 
