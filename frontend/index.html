@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Formulario de reporte de eventos de riesgo institucional">
+  <meta name="robots" content="noindex">
+  <title>Reporte de Eventos de Riesgo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<!-- ── HEADER ──────────────────────────────────────────────── -->
+<header class="page-header">
+  <div class="container header-inner">
+    <span class="header-tag">Gestión de Riesgos Institucional</span>
+    <h1>Reporte de <em>Eventos de Riesgo</em></h1>
+    <p class="header-desc">
+      Registra situaciones concretas que ya ocurrieron y que debemos conocer, aprender de ellas y gestionar de forma proactiva.
+    </p>
+
+    <div class="info-box">
+      <p class="info-box-title">Registra el evento cuando se cumpla al menos una de estas situaciones</p>
+      <div class="info-grid">
+        <div class="info-item"><span class="info-dot"></span><span>Tuviste que pedir ayuda o escalar</span></div>
+        <div class="info-item"><span class="info-dot"></span><span>El asunto no terminó ahí</span></div>
+        <div class="info-item"><span class="info-dot"></span><span>Involucra la seguridad o bienestar de una persona</span></div>
+        <div class="info-item"><span class="info-dot"></span><span>Hay dinero, bienes o datos comprometidos</span></div>
+        <div class="info-item"><span class="info-dot"></span><span>Ya pasó antes y volvió a pasar</span></div>
+        <div class="info-item"><span class="info-dot"></span><span>Si saliera en redes, sería un problema</span></div>
+      </div>
+      <p class="info-note">
+        <strong>No registres cuando:</strong> lo resolviste solo sin consecuencias · ocurre todos los días como parte normal del colegio · es una idea o preocupación sobre algo que podría pasar.<br>
+        Este reporte no reemplaza los conductos regulares de la institución.
+      </p>
+    </div>
+  </div>
+</header>
+
+<!-- ── MAIN ─────────────────────────────────────────────────── -->
+<main>
+  <div class="container main">
+
+    <div id="alertSuccess" class="alert alert-success" role="alert"></div>
+    <div id="alertError"   class="alert alert-error"   role="alert"></div>
+
+    <form id="riskForm" novalidate autocomplete="off">
+
+      <!-- Sección 1: Información básica -->
+      <div class="form-card">
+        <div class="section-label">Información básica</div>
+
+        <div class="field" id="field-fecha">
+          <label for="fecha">
+            <span class="field-num">1</span>
+            <span>¿Cuándo ocurrió el evento?<span class="req">*</span></span>
+          </label>
+          <input type="date" id="fecha" name="fecha" required>
+        </div>
+
+        <div class="field" id="field-gestion">
+          <label for="gestion">
+            <span class="field-num">2</span>
+            <span>¿A qué gestión pertenece el proceso donde ocurrió el evento?<span class="req">*</span></span>
+          </label>
+          <div class="select-wrap">
+            <select id="gestion" name="gestion" required>
+              <option value="">Selecciona una opción…</option>
+              <option>Administrativa y Financiera</option>
+              <option>Experiencia de la Comunidad</option>
+              <option>Formación Integral</option>
+              <option>Talento Humano</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field" id="field-proceso">
+          <label for="proceso">
+            <span class="field-num">3</span>
+            <span>¿En qué proceso o área específica ocurrió?<span class="req">*</span></span>
+          </label>
+          <div class="select-wrap">
+            <select id="proceso" name="proceso" required>
+              <option value="">Selecciona una opción…</option>
+              <option>Admisiones</option>
+              <option>Atracción y selección</option>
+              <option>Compras</option>
+              <option>Comunicaciones</option>
+              <option>Entornos protectores</option>
+              <option>Egresados</option>
+              <option>Académico</option>
+              <option>Infraestructura física</option>
+              <option>Infraestructura tecnológica</option>
+              <option>Mercadeo</option>
+              <option>Pastoral</option>
+              <option>Psicología</option>
+              <option>Psicopedagogía</option>
+              <option>Formación y capacitación</option>
+              <option value="Otras">Otras (especificar)</option>
+            </select>
+          </div>
+          <div class="other-wrap" id="otherWrap">
+            <input type="text" id="procesoOtro" name="procesoOtro" placeholder="¿Cuál proceso o área?" maxlength="120">
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección 2: Descripción -->
+      <div class="form-card">
+        <div class="section-label">Descripción del evento</div>
+
+        <div class="field" id="field-descripcion">
+          <label for="descripcion">
+            <span class="field-num">4</span>
+            <span>Describe brevemente qué pasó. Sé específico: qué ocurrió y dónde<span class="req">*</span></span>
+          </label>
+          <p class="hint">No necesitas especificar el nombre de la persona involucrada.</p>
+          <textarea id="descripcion" name="descripcion" rows="4"
+            placeholder="Ej: Por falta de gas, no se pudo prestar el servicio de restaurante escolar. 180 estudiantes quedaron sin almuerzo." required maxlength="1500"></textarea>
+          <div class="examples">
+            <p><strong>🔴 Administrativa y Financiera:</strong> "Por falta de gas, no se pudo prestar el servicio de restaurante escolar el día de hoy. 180 estudiantes quedaron sin almuerzo."</p>
+            <p><strong>🔴 Experiencia de la Comunidad:</strong> "En la encuesta de satisfacción del período, 12 familias marcaron 'probablemente no renuevo matrícula'."</p>
+            <p><strong>🔴 Formación Integral:</strong> "Una estudiante de grado 9° fue remitida a orientación tras mostrar marcas de cortes en los brazos."</p>
+            <p><strong>🔴 Talento Humano:</strong> "Un docente nuevo lleva 6 semanas sin inducción al modelo pedagógico ni acompañamiento de aula. Las familias ya preguntaron."</p>
+          </div>
+        </div>
+
+        <div class="field" id="field-consecuencia">
+          <label for="consecuencia">
+            <span class="field-num">5</span>
+            <span>¿Qué consecuencia concreta tuvo el evento?<span class="req">*</span></span>
+          </label>
+          <p class="hint">Pérdida, daño, interrupción, afectación a persona, etc. Ej: "Estudiante atendido en urgencias, ausente 2 días"</p>
+          <textarea id="consecuencia" name="consecuencia" rows="3"
+            placeholder="Describe el impacto concreto…" required maxlength="800"></textarea>
+        </div>
+      </div>
+
+      <!-- Sección 3: Evaluación -->
+      <div class="form-card">
+        <div class="section-label">Evaluación y respuesta</div>
+
+        <div class="field" id="field-gravedad">
+          <label>
+            <span class="field-num">6</span>
+            <span>Según tu criterio, ¿qué tan grave fue el impacto de este evento?<span class="req">*</span></span>
+          </label>
+          <div class="severity-grid" id="severityGrid" role="radiogroup" aria-label="Nivel de gravedad">
+            <div class="severity-item" data-val="1" role="radio" aria-checked="false" tabindex="0" onclick="selectSeverity(1)" onkeydown="if(event.key==='Enter'||event.key===' ')selectSeverity(1)">
+              <input type="radio" name="gravedad" value="1" aria-hidden="true">
+              <span class="severity-num">1</span>
+              <span class="severity-desc">Insignificante</span>
+            </div>
+            <div class="severity-item" data-val="2" role="radio" aria-checked="false" tabindex="0" onclick="selectSeverity(2)" onkeydown="if(event.key==='Enter'||event.key===' ')selectSeverity(2)">
+              <input type="radio" name="gravedad" value="2" aria-hidden="true">
+              <span class="severity-num">2</span>
+              <span class="severity-desc">Menor</span>
+            </div>
+            <div class="severity-item" data-val="3" role="radio" aria-checked="false" tabindex="0" onclick="selectSeverity(3)" onkeydown="if(event.key==='Enter'||event.key===' ')selectSeverity(3)">
+              <input type="radio" name="gravedad" value="3" aria-hidden="true">
+              <span class="severity-num">3</span>
+              <span class="severity-desc">Moderado</span>
+            </div>
+            <div class="severity-item" data-val="4" role="radio" aria-checked="false" tabindex="0" onclick="selectSeverity(4)" onkeydown="if(event.key==='Enter'||event.key===' ')selectSeverity(4)">
+              <input type="radio" name="gravedad" value="4" aria-hidden="true">
+              <span class="severity-num">4</span>
+              <span class="severity-desc">Mayor</span>
+            </div>
+            <div class="severity-item" data-val="5" role="radio" aria-checked="false" tabindex="0" onclick="selectSeverity(5)" onkeydown="if(event.key==='Enter'||event.key===' ')selectSeverity(5)">
+              <input type="radio" name="gravedad" value="5" aria-hidden="true">
+              <span class="severity-num">5</span>
+              <span class="severity-desc">Catastrófico</span>
+            </div>
+          </div>
+          <p class="severity-hint">
+            <strong>1</strong> Sin consecuencias visibles, se resuelve al instante ·
+            <strong>2</strong> Afectación leve, manejable desde el proceso ·
+            <strong>3</strong> Requiere intervención de coordinación ·
+            <strong>4</strong> Daño real, interviene Dirección ·
+            <strong>5</strong> Riesgo para la continuidad o integridad grave de personas
+          </p>
+        </div>
+
+        <div class="field" id="field-accion">
+          <label>
+            <span class="field-num">7</span>
+            <span>¿Se tomó alguna acción inmediata para contener o mitigar el evento?<span class="req">*</span></span>
+          </label>
+          <div class="radio-group" id="accionGroup" role="radiogroup">
+            <label class="radio-item" onclick="selectAccion('Sí', this)">
+              <input type="radio" name="accion" value="Sí" aria-hidden="true">
+              <div class="radio-dot" aria-hidden="true"></div>
+              <div class="radio-label">Sí</div>
+            </label>
+            <label class="radio-item" onclick="selectAccion('No', this)">
+              <input type="radio" name="accion" value="No" aria-hidden="true">
+              <div class="radio-dot" aria-hidden="true"></div>
+              <div class="radio-label">No</div>
+            </label>
+            <label class="radio-item" onclick="selectAccion('En proceso', this)">
+              <input type="radio" name="accion" value="En proceso" aria-hidden="true">
+              <div class="radio-dot" aria-hidden="true"></div>
+              <div class="radio-label">En proceso</div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="submit-area">
+        <button type="submit" class="btn-primary" id="submitBtn">Registrar evento</button>
+        <p class="footer-note">
+          El registro se envía automáticamente al equipo responsable.<br>
+          Este formulario no reemplaza los conductos regulares de la institución.
+        </p>
+      </div>
+
+    </form>
+  </div>
+</main>
+
+<script src="/js/form.js"></script>
+</body>
+</html>
