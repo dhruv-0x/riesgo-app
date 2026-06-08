@@ -14,11 +14,11 @@ let selectedSeverity = null;
 let selectedAccion = null;
 
 // ── DOM refs ────────────────────────────────────────────────
-const form          = /** @type {HTMLFormElement} */ (document.getElementById("riskForm"));
+const form          = document.getElementById("riskForm");
 const alertSuccess  = document.getElementById("alertSuccess");
 const alertError    = document.getElementById("alertError");
-const submitBtn     = /** @type {HTMLButtonElement} */ (document.getElementById("submitBtn"));
-const procesoSelect = /** @type {HTMLSelectElement} */ (document.getElementById("proceso"));
+const submitBtn     = document.getElementById("submitBtn");
+const procesoSelect = document.getElementById("proceso");
 const otherWrap     = document.getElementById("otherWrap");
 
 // ── Severity selection ──────────────────────────────────────
@@ -28,7 +28,9 @@ const otherWrap     = document.getElementById("otherWrap");
 function selectSeverity(val) {
   selectedSeverity = val;
   document.querySelectorAll(".severity-item").forEach(el => {
-    el.classList.toggle("selected", parseInt(el.getAttribute("data-val") || "0") === val);
+    const isSelected = parseInt(el.getAttribute("data-val") || "0") === val;
+    el.classList.toggle("selected", isSelected);
+    el.setAttribute("aria-checked", isSelected ? "true" : "false");
   });
   document.getElementById("field-gravedad")?.classList.remove("has-error");
 }
@@ -55,7 +57,7 @@ procesoSelect?.addEventListener("change", () => {
   otherWrap?.classList.toggle("visible", isOther);
   const otherInput = document.getElementById("procesoOtro");
   if (otherInput) {
-    /** @type {HTMLInputElement} */ (otherInput).required = isOther;
+    otherInput.required = isOther;
   }
 });
 
@@ -96,7 +98,7 @@ function validate() {
  */
 function getVal(id) {
   const el = document.getElementById(id);
-  return el ? /** @type {HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement} */ (el).value : "";
+  return el ? el.value : "";
 }
 
 // ── Form submit ─────────────────────────────────────────────
@@ -112,7 +114,6 @@ form?.addEventListener("submit", async (e) => {
     return;
   }
 
-  /** @type {ReportePayload} */
   const payload = {
     fechaEvento:     getVal("fecha"),
     gestion:         getVal("gestion"),
@@ -158,21 +159,18 @@ function hideAlerts() {
   alertError?.classList.remove("visible");
 }
 
-/** @param {string} msg */
 function showSuccess(msg) {
   if (!alertSuccess) return;
   alertSuccess.innerHTML = `<strong>✓ ¡Listo!</strong> ${msg}`;
   alertSuccess.classList.add("visible");
 }
 
-/** @param {string} msg */
 function showError(msg) {
   if (!alertError) return;
   alertError.textContent = msg;
   alertError.classList.add("visible");
 }
 
-/** @param {boolean} loading */
 function setLoading(loading) {
   if (!submitBtn) return;
   submitBtn.disabled = loading;
@@ -190,3 +188,4 @@ function resetForm() {
   document.querySelectorAll(".has-error").forEach(el => el.classList.remove("has-error"));
   otherWrap?.classList.remove("visible");
 }
+
