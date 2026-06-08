@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 📋 Reporte de Eventos de Riesgo — Guía de instalación
 
 Sistema web para reportar eventos de riesgo institucional. Incluye formulario público, notificación automática por correo y panel de administración protegido.
@@ -238,6 +237,3 @@ Copia el archivo `data/reportes.json` a un lugar seguro. Puedes importarlo de vu
 
 **¿Puedo cambiar el nombre del colegio?**
 Sí, cambia `SCHOOL_NAME` en el archivo `.env` y reinicia el servidor.
-=======
-# riesgo-app
->>>>>>> 3352e7e5ac888785975c84940f3e6bdb118cf69e
