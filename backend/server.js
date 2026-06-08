@@ -56,6 +56,31 @@ app.use("/api/reportes", formLimiter, reportesRouter);
 app.use("/api/auth", authLimiter, authRouter);
 app.use("/api/admin", adminRouter);
 
+// ── Descarga de Excel (testing) ──────────────────────────────
+app.get("/download-excel", (req, res) => {
+  try {
+    const { readReportes } = require("./utils/storage");
+    const { generateExcel } = require("./utils/excel");
+    
+    const reportes = readReportes();
+    if (reportes.length === 0) {
+      return res.status(404).json({ error: "No hay reportes registrados aún." });
+    }
+
+    const buffer = generateExcel(reportes);
+    const fecha = new Date().toISOString().slice(0, 10);
+    const filename = `Reportes_Riesgo_${fecha}.xlsx`;
+
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+    res.setHeader("Content-Length", buffer.length);
+    res.send(buffer);
+  } catch (err) {
+    console.error("[excel error]", err);
+    res.status(500).json({ error: "No se pudo generar el archivo Excel." });
+  }
+});
+
 // ── Página admin ─────────────────────────────────────────────
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/pages/admin.html"));
